@@ -14,13 +14,11 @@ Local MVP that stores a wardrobe in SQLite, analyzes gaps, fetches cheap online 
 - Listing source adapter with explicit failure handling
 - Filter recommendations by budget, category, size, and color
 - Seeded wardrobe example
-- Backend smoke test covering CRUD + analysis + recommendations
 
 ## Folder layout
 - `backend/src/routes` API route modules
 - `backend/src/services` analysis/ranking/source adapters
 - `backend/src/db` database and seed scripts
-- `backend/src/tests` backend integration smoke tests
 - `frontend/src/pages` required pages
 - `frontend/src/api` frontend API client
 
