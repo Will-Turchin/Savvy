@@ -5,7 +5,7 @@ Local MVP that stores a wardrobe in SQLite, analyzes gaps, fetches cheap online 
 ## Stack
 - Backend: Express + SQLite
 - Frontend: React (Vite)
-- External source adapter: DummyJSON product search API
+- External source adapter: live web scraping (eBay search listings)
 
 ## Features
 - Wardrobe CRUD backed by SQLite
@@ -59,5 +59,5 @@ npm run test:backend
 - `GET /api/recommendations?budget=&category=&size=&color=`
 
 ## Notes on source adapters
-- The adapter in `backend/src/services/sources/dummyJsonAdapter.js` is modular and isolated for future source expansion.
+- The adapter in `backend/src/services/sources/webScraperAdapter.js` scrapes listing cards from eBay search results and is modular for future source expansion.
 - If source fetches fail, errors are logged and recommendation generation continues with any successful source responses.
