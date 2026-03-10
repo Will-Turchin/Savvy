@@ -1,12 +1,12 @@
 import { analyzeWardrobe } from './gapAnalysisService.js';
-import { fetchListings as fetchDummyJsonListings } from './sources/dummyJsonAdapter.js';
+import { fetchListings as fetchScrapedListings } from './sources/webScraperAdapter.js';
 
 export async function buildRecommendations(wardrobeItems, filters = {}) {
   const analysis = analyzeWardrobe(wardrobeItems);
   const recommendations = [];
 
   for (const gap of analysis.gaps) {
-    const listings = await fetchDummyJsonListings({
+    const listings = await fetchScrapedListings({
       category: gap.category,
       budget: filters.budget,
       size: filters.size,
