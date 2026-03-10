@@ -40,6 +40,16 @@ Local MVP that stores a wardrobe in SQLite, analyzes gaps, fetches cheap online 
    npm run dev:frontend
    ```
 
+### Database path behavior
+- The backend now auto-creates the database directory (`backend/data`) at startup, so fresh clones no longer fail with `SQLITE_CANTOPEN`.
+- You can override the DB path with `SAVVY_DB_PATH` if needed.
+
+## Testing
+Run backend smoke tests:
+```bash
+npm run test:backend
+```
+
 ## API Endpoints
 - `GET /api/wardrobe`
 - `POST /api/wardrobe`
