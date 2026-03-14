@@ -20,3 +20,30 @@ export async function apiDelete(path) {
   const res = await fetch(`${API_URL}${path}`, { method: 'DELETE' });
   if (!res.ok) throw new Error(`DELETE ${path} failed`);
 }
+
+export function streamApi(path, { onMessage, onError, onOpen, onDone } = {}) {
+  const stream = new EventSource(`${API_URL}${path}`);
+
+  stream.addEventListener('open', () => {
+    onOpen?.();
+  });
+
+  stream.addEventListener('items', (event) => {
+    onMessage?.(JSON.parse(event.data));
+  });
+
+  stream.addEventListener('done', (event) => {
+    onDone?.(event.data ? JSON.parse(event.data) : undefined);
+    stream.close();
+  });
+
+  stream.addEventListener('error-message', (event) => {
+    onError?.(event.data ? JSON.parse(event.data) : { message: 'Streaming recommendations failed.' });
+  });
+
+  stream.addEventListener('error', (event) => {
+    onError?.({ message: 'Recommendation stream disconnected unexpectedly.', event });
+  });
+
+  return () => stream.close();
+}

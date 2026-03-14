@@ -30,7 +30,9 @@ const coreNeeds = [
 ];
 
 export function analyzeWardrobe(wardrobeItems) {
-  const byCategory = wardrobeItems.reduce((acc, item) => {
+  const normalizedItems = wardrobeItems.map(normalizeWardrobeItem);
+
+  const byCategory = normalizedItems.reduce((acc, item) => {
     acc[item.category] = acc[item.category] || [];
     acc[item.category].push(item);
     return acc;
@@ -39,21 +41,40 @@ export function analyzeWardrobe(wardrobeItems) {
   const gaps = coreNeeds
     .map((need) => {
       const categoryItems = byCategory[need.category] || [];
-      const neutralCount = categoryItems.filter((item) =>
+      const totalCount = categoryItems.length;
+      const preferredColorCount = categoryItems.filter((item) =>
         need.preferredColors.includes(item.color.toLowerCase())
       ).length;
 
-      const missingCount = Math.max(need.minCount - neutralCount, 0);
+      const missingCount = Math.max(need.minCount - totalCount, 0);
+      const missingPreferredColors = Math.max(need.minCount - preferredColorCount, 0);
+
       if (!missingCount) {
-        return null;
+        if (!missingPreferredColors) {
+          return null;
+        }
+
+        return {
+          gapId: need.id,
+          category: need.category,
+          missingCount: 0,
+          missingPreferredColors,
+          preferredColors: need.preferredColors,
+          reason: `${need.reason} You have enough ${need.category} pieces, but ${missingPreferredColors} more in versatile colors would improve outfit flexibility.`,
+          priority: 'medium'
+        };
       }
 
       return {
         gapId: need.id,
         category: need.category,
         missingCount,
+        missingPreferredColors,
         preferredColors: need.preferredColors,
-        reason: need.reason,
+        reason:
+          missingPreferredColors > missingCount
+            ? `${need.reason} Neutral colors will make these additions easier to pair.`
+            : need.reason,
         priority: missingCount >= 2 ? 'high' : 'medium'
       };
     })
@@ -66,4 +87,54 @@ export function analyzeWardrobe(wardrobeItems) {
     ),
     gaps
   };
+}
+
+function normalizeWardrobeItem(item) {
+  return {
+    ...item,
+    category: normalizeCategory(item.category),
+    color: normalizeColor(item.color)
+  };
+}
+
+function normalizeCategory(category) {
+  const normalized = String(category || '')
+    .trim()
+    .toLowerCase();
+
+  const aliases = {
+    tops: 'top',
+    shirts: 'top',
+    shirt: 'top',
+    tees: 'top',
+    tee: 'top',
+    bottoms: 'bottom',
+    pants: 'bottom',
+    trousers: 'bottom',
+    jeans: 'bottom',
+    outerwears: 'outerwear',
+    jackets: 'outerwear',
+    jacket: 'outerwear',
+    coats: 'outerwear',
+    coat: 'outerwear',
+    shoe: 'shoes',
+    footwear: 'shoes',
+    sneakers: 'shoes',
+    boots: 'shoes'
+  };
+
+  return aliases[normalized] || normalized;
+}
+
+function normalizeColor(color) {
+  const normalized = String(color || '')
+    .trim()
+    .toLowerCase();
+
+  const aliases = {
+    gray: 'grey',
+    tan: 'beige'
+  };
+
+  return aliases[normalized] || normalized;
 }

@@ -32,7 +32,11 @@ export default function AnalysisPage() {
           <ul>
             {analysis.gaps.map((gap) => (
               <li key={gap.gapId}>
-                <strong>{gap.category}</strong> — missing {gap.missingCount}; priority {gap.priority}
+                <strong>{gap.category}</strong> —{' '}
+                {gap.missingCount > 0
+                  ? `missing ${gap.missingCount}`
+                  : `enough pieces, but ${gap.missingPreferredColors} more versatile colors would help`}
+                ; priority {gap.priority}
                 <br />
                 {gap.reason}
               </li>

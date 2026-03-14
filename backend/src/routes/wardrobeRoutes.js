@@ -10,7 +10,8 @@ router.get('/', async (_req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  const { name, category, color, size, season, formality } = req.body;
+  const payload = normalizeWardrobePayload(req.body);
+  const { name, category, color, size, season, formality } = payload;
   if (!name || !category || !color || !size || !season || !formality) {
     return res.status(400).json({ error: 'All fields are required.' });
   }
@@ -28,7 +29,7 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const { name, category, color, size, season, formality } = req.body;
+  const { name, category, color, size, season, formality } = normalizeWardrobePayload(req.body);
 
   const db = await getDb();
   await db.run(
@@ -49,3 +50,58 @@ router.delete('/:id', async (req, res) => {
 });
 
 export default router;
+
+function normalizeWardrobePayload(payload = {}) {
+  return {
+    name: String(payload.name || '').trim(),
+    category: normalizeCategory(payload.category),
+    color: normalizeColor(payload.color),
+    size: String(payload.size || '')
+      .trim()
+      .toUpperCase(),
+    season: String(payload.season || '')
+      .trim()
+      .toLowerCase(),
+    formality: String(payload.formality || '')
+      .trim()
+      .toLowerCase()
+  };
+}
+
+function normalizeCategory(category) {
+  const normalized = String(category || '')
+    .trim()
+    .toLowerCase();
+
+  const aliases = {
+    tops: 'top',
+    shirts: 'top',
+    shirt: 'top',
+    bottoms: 'bottom',
+    pants: 'bottom',
+    trousers: 'bottom',
+    jeans: 'bottom',
+    jackets: 'outerwear',
+    jacket: 'outerwear',
+    coats: 'outerwear',
+    coat: 'outerwear',
+    shoe: 'shoes',
+    sneakers: 'shoes',
+    boots: 'shoes'
+  };
+
+  return aliases[normalized] || normalized;
+}
+
+function normalizeColor(color) {
+  const normalized = String(color || '')
+    .trim()
+    .toLowerCase();
+
+  const aliases = {
+    gray: 'grey',
+    tan: 'beige'
+  };
+
+  return aliases[normalized] || normalized;
+}
