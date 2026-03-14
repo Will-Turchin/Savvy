@@ -31,6 +31,11 @@ Local MVP that stores a wardrobe in SQLite, analyzes gaps, fetches cheap online 
    ```bash
    npm run seed
    ```
+   This only fills the database if it is empty. It will not wipe your saved wardrobe changes.
+   If you intentionally want to restore the original sample wardrobe, run:
+   ```bash
+   npm --prefix backend run seed:reset
+   ```
 3. Run backend on localhost:4000:
    ```bash
    npm run dev:backend
@@ -43,6 +48,7 @@ Local MVP that stores a wardrobe in SQLite, analyzes gaps, fetches cheap online 
 ### Database path behavior
 - The backend now auto-creates the database directory (`backend/data`) at startup, so fresh clones no longer fail with `SQLITE_CANTOPEN`.
 - You can override the DB path with `SAVVY_DB_PATH` if needed.
+- Wardrobe changes persist in SQLite at `backend/data/wardrobe.sqlite`, so added and deleted items remain between sessions as long as you do not reset the seed data.
 
 ## Testing
 Run backend smoke tests:

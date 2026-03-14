@@ -11,7 +11,18 @@ const seedItems = [
 
 async function seed() {
   const db = await getDb();
-  await db.exec('DELETE FROM wardrobe_items;');
+  const existing = await db.get('SELECT COUNT(*) AS count FROM wardrobe_items');
+  const shouldReset = process.argv.includes('--reset');
+
+  if (existing.count > 0 && !shouldReset) {
+    console.log('Wardrobe already has saved items. Skipping seed so your changes persist.');
+    console.log('Run `npm run seed:reset` if you intentionally want to restore the sample wardrobe.');
+    return;
+  }
+
+  if (shouldReset) {
+    await db.exec('DELETE FROM wardrobe_items;');
+  }
 
   const stmt = await db.prepare(`
     INSERT INTO wardrobe_items (name, category, color, size, season, formality)
@@ -23,7 +34,7 @@ async function seed() {
   }
 
   await stmt.finalize();
-  console.log('Seeded wardrobe with sample data.');
+  console.log(shouldReset ? 'Reset wardrobe to sample data.' : 'Seeded wardrobe with sample data.');
 }
 
 seed().catch((error) => {
