@@ -54,10 +54,8 @@ export default function RecommendationsPage() {
     <section className="page-layout">
       <div className="section-heading">
         <p className="eyebrow">Recommendations</p>
-        <h2>Browse smarter additions as they arrive.</h2>
-        <p className="section-copy">
-          Results stream in progressively and are ranked for compatibility, budget fit, and overall wardrobe usefulness.
-        </p>
+        <h2>Find better pieces, faster.</h2>
+        <p className="section-copy">Streaming results. Cleaner picks.</p>
       </div>
 
       <div className="card filter-bar">
@@ -112,9 +110,7 @@ export default function RecommendationsPage() {
           <p className="panel-kicker">Ranked Results</p>
           <h3>{items.length} recommendation{items.length === 1 ? '' : 's'}</h3>
         </div>
-        <p className="panel-copy">
-          Long listing URLs are tucked behind a clean action so the layout stays readable.
-        </p>
+        <p className="panel-copy">Best matches at the top.</p>
       </div>
 
       {loading ? <p className="loading-page">Streaming recommendations...</p> : null}

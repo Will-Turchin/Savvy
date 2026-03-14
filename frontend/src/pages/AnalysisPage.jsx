@@ -14,10 +14,8 @@ export default function AnalysisPage() {
     <section className="page-layout">
       <div className="section-heading">
         <p className="eyebrow">Analysis Dashboard</p>
-        <h2>See where the wardrobe is strong and where it still needs support.</h2>
-        <p className="section-copy">
-          Gap analysis is based on core category coverage first, then versatility signals like neutral colors.
-        </p>
+        <h2>See the gaps fast.</h2>
+        <p className="section-copy">Coverage first. Versatility second.</p>
       </div>
 
       <div className="stats-grid">
@@ -39,9 +37,9 @@ export default function AnalysisPage() {
         <div className="panel-heading">
           <div>
             <p className="panel-kicker">Detected Gaps</p>
-            <h3>Where to focus next</h3>
+            <h3>What to fix next</h3>
           </div>
-          <p className="panel-copy">These recommendations reflect missing coverage as well as color versatility.</p>
+          <p className="panel-copy">Simple priorities, clear direction.</p>
         </div>
 
         {analysis.gaps.length === 0 ? (

@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import wardrobeRoutes from './routes/wardrobeRoutes.js';
 import analysisRoutes from './routes/analysisRoutes.js';
+import outfitRoutes from './routes/outfitRoutes.js';
 import recommendationRoutes from './routes/recommendationRoutes.js';
 
 const app = express();
@@ -15,6 +16,7 @@ app.get('/api', (_req, res) => {
     endpoints: {
       wardrobe: 'GET/POST /api/wardrobe, PUT/DELETE /api/wardrobe/:id',
       analysis: 'GET /api/analysis',
+      outfits: 'GET /api/outfits',
       recommendations: 'GET /api/recommendations?budget=&category=&size=&color='
     }
   });
@@ -22,6 +24,7 @@ app.get('/api', (_req, res) => {
 
 app.use('/api/wardrobe', wardrobeRoutes);
 app.use('/api/analysis', analysisRoutes);
+app.use('/api/outfits', outfitRoutes);
 app.use('/api/recommendations', recommendationRoutes);
 
 export default app;

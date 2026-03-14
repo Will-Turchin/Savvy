@@ -48,10 +48,8 @@ export default function WardrobePage() {
     <section className="page-layout">
       <div className="section-heading">
         <p className="eyebrow">Wardrobe Manager</p>
-        <h2>Capture the pieces you already reach for.</h2>
-        <p className="section-copy">
-          Keep your wardrobe structured so the analysis and recommendations stay grounded in what you actually own.
-        </p>
+        <h2>Your wardrobe, at a glance.</h2>
+        <p className="section-copy">Add pieces fast and keep the foundation clean.</p>
       </div>
 
       <div className="split-layout">
@@ -59,9 +57,9 @@ export default function WardrobePage() {
           <div className="panel-heading">
             <div>
               <p className="panel-kicker">Add Item</p>
-              <h3>Wardrobe Details</h3>
+              <h3>New Piece</h3>
             </div>
-            <p className="panel-copy">Use the guided fields to keep categories, sizing, and colors consistent.</p>
+            <p className="panel-copy">Quick, consistent entry.</p>
           </div>
 
           <div className="form-grid">
@@ -137,7 +135,7 @@ export default function WardrobePage() {
               <p className="panel-kicker">Current Wardrobe</p>
               <h3>{loading ? 'Loading pieces...' : `${items.length} pieces tracked`}</h3>
             </div>
-            <p className="panel-copy">A cleaner inventory makes the downstream analysis much more useful.</p>
+            <p className="panel-copy">Everything you already own.</p>
           </div>
 
           {loading ? (
