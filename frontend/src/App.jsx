@@ -6,21 +6,32 @@ import RecommendationsPage from './pages/RecommendationsPage';
 export default function App() {
   return (
     <div className="app-shell">
-      <header>
-        <h1>Savvy Wardrobe Improvement MVP</h1>
-        <nav>
-          <NavLink to="/">Wardrobe Manager</NavLink>
-          <NavLink to="/analysis">Analysis Dashboard</NavLink>
-          <NavLink to="/recommendations">Recommendations</NavLink>
-        </nav>
+      <header className="app-header">
+        <div className="hero-panel">
+          <div>
+            <p className="eyebrow">Modern Neutral Wardrobe Assistant</p>
+            <h1>Savvy Wardrobe Improvement MVP</h1>
+            <p className="hero-copy">
+              Organize what you own, spot gaps with better logic, and browse cleaner recommendations without the clutter.
+            </p>
+          </div>
+          <nav className="nav-tabs" aria-label="Primary navigation">
+            <NavLink to="/">Wardrobe Manager</NavLink>
+            <NavLink to="/analysis">Analysis Dashboard</NavLink>
+            <NavLink to="/recommendations">Recommendations</NavLink>
+          </nav>
+        </div>
       </header>
-      <main>
+      <main className="page-shell">
         <Routes>
           <Route path="/" element={<WardrobePage />} />
           <Route path="/analysis" element={<AnalysisPage />} />
           <Route path="/recommendations" element={<RecommendationsPage />} />
         </Routes>
       </main>
+      <footer className="app-footer">
+        <p>Built for quick wardrobe cleanup, sharper analysis, and more deliberate shopping.</p>
+      </footer>
     </div>
   );
 }

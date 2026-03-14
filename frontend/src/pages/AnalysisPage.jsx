@@ -8,40 +8,70 @@ export default function AnalysisPage() {
     apiGet('/analysis').then(setAnalysis);
   }, []);
 
-  if (!analysis) return <p>Loading analysis...</p>;
+  if (!analysis) return <p className="loading-page">Loading analysis...</p>;
 
   return (
-    <section>
-      <h2>Analysis Dashboard</h2>
-      <div className="card">
-        <p>Total items: {analysis.totalItems}</p>
-        <h3>Category breakdown</h3>
-        <ul>
-          {Object.entries(analysis.categoryBreakdown).map(([category, count]) => (
-            <li key={category}>
-              {category}: {count}
-            </li>
-          ))}
-        </ul>
+    <section className="page-layout">
+      <div className="section-heading">
+        <p className="eyebrow">Analysis Dashboard</p>
+        <h2>See where the wardrobe is strong and where it still needs support.</h2>
+        <p className="section-copy">
+          Gap analysis is based on core category coverage first, then versatility signals like neutral colors.
+        </p>
       </div>
-      <div className="card">
-        <h3>Detected Gaps</h3>
+
+      <div className="stats-grid">
+        <article className="card stat-card stat-card-accent">
+          <p className="stat-label">Total Items</p>
+          <h3>{analysis.totalItems}</h3>
+          <p className="stat-copy">Your current tracked wardrobe footprint.</p>
+        </article>
+        {Object.entries(analysis.categoryBreakdown).map(([category, count]) => (
+          <article key={category} className="card stat-card">
+            <p className="stat-label">{category}</p>
+            <h3>{count}</h3>
+            <p className="stat-copy">Pieces currently categorized as {category}.</p>
+          </article>
+        ))}
+      </div>
+
+      <div className="card surface-panel">
+        <div className="panel-heading">
+          <div>
+            <p className="panel-kicker">Detected Gaps</p>
+            <h3>Where to focus next</h3>
+          </div>
+          <p className="panel-copy">These recommendations reflect missing coverage as well as color versatility.</p>
+        </div>
+
         {analysis.gaps.length === 0 ? (
-          <p>No core gaps detected.</p>
+          <p className="empty-state">No core gaps detected. The wardrobe has enough coverage across the essentials.</p>
         ) : (
-          <ul>
+          <div className="stack-list">
             {analysis.gaps.map((gap) => (
-              <li key={gap.gapId}>
-                <strong>{gap.category}</strong> —{' '}
-                {gap.missingCount > 0
-                  ? `missing ${gap.missingCount}`
-                  : `enough pieces, but ${gap.missingPreferredColors} more versatile colors would help`}
-                ; priority {gap.priority}
-                <br />
-                {gap.reason}
-              </li>
+              <article key={gap.gapId} className="gap-card">
+                <div className="gap-header">
+                  <div>
+                    <h4>{gap.category}</h4>
+                    <p className="muted-line">
+                      {gap.missingCount > 0
+                        ? `Missing ${gap.missingCount} piece${gap.missingCount === 1 ? '' : 's'}`
+                        : `${gap.missingPreferredColors} more versatile color picks would help`}
+                    </p>
+                  </div>
+                  <span className={`priority-pill priority-${gap.priority}`}>{gap.priority}</span>
+                </div>
+                <p className="gap-reason">{gap.reason}</p>
+                <div className="chip-row">
+                  {gap.preferredColors.map((color) => (
+                    <span key={color} className="chip">
+                      {color}
+                    </span>
+                  ))}
+                </div>
+              </article>
             ))}
-          </ul>
+          </div>
         )}
       </div>
     </section>
